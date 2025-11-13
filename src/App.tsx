@@ -1,30 +1,49 @@
-import { useState } from "react";
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import styled from "styled-components";
+import Layout from "./Routings/layout";
+import Home from "./Routings/Home";
+import Profile from "./Routings/Profile";
+import Login from "./Routings/Login";
+import CreateAccount from "./Routings/CreateAccount";
 
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-
-  h3 {
-    font-size: 17px;
-    font-weight: bold;
-    margin: 5px 0px;
-  }
 `;
+
+const Routers = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <Home />
+      },
+      {
+        path: "profile",
+        element: <Profile />
+      }
+    ]
+  },
+  {
+    path: "/login",
+    element: <Login />
+  },
+  {
+    path: "/createAccount",
+    element: <CreateAccount />
+  }
+]);
 
 function App() {
   return (
     <Wrapper>
-      <h3>Hello Vite</h3>
-      <p>
-        기존의 CRA 사용하지 않고 <br/>
-        Vite 사용해서 만든 <br/>
-        React Project 입니다.
-      </p>
+      <RouterProvider router={Routers} />
     </Wrapper>
   );
 }
