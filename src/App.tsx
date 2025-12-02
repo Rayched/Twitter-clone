@@ -5,10 +5,11 @@ import Layout from "./Routings/layout";
 import Home from "./Routings/Home";
 import Profile from "./Routings/Profile";
 import Login from "./Routings/Login";
-import CreateAccount from "./Routings/CreateAccount";
+import CreateAccount from "./Routings/SignUp";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./Routings/Loading";
-import { auth } from "./firebase";
+import { auth } from "./FirebaseSetup";
+import SignUpPage from "./Routings/SignUp";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -38,25 +39,27 @@ const Routers = createBrowserRouter([
     element: <Login />
   },
   {
-    path: "/createAccount",
-    element: <CreateAccount />
+    path: "/signup",
+    element: <SignUpPage />
   }
 ]);
 
 function App() {
   const [isLoading, setLoading] = useState(true);
-  const Auth = auth;
+  
+  //const Auth = auth;
 
   const Init = async() => {
     //Firebase가 준비될 때까지 실행 X
-    await Auth.authStateReady();
+    //await Auth.authStateReady();
     setTimeout(() => setLoading(false), 2000);
   };
 
   useEffect(() => {
     Init()
   }, []);
-
+  
+  
   return (
     <Wrapper>
         {
