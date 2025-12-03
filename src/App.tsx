@@ -3,9 +3,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "./Routings/layout";
 import Home from "./Routings/Home";
-import Profile from "./Routings/Profile";
-import Login from "./Routings/Login";
-import CreateAccount from "./Routings/SignUp";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./Routings/Loading";
 import { auth } from "./FirebaseSetup";
@@ -27,16 +24,8 @@ const Routers = createBrowserRouter([
       {
         path: "",
         element: <Home />
-      },
-      {
-        path: "profile",
-        element: <Profile />
       }
     ]
-  },
-  {
-    path: "/login",
-    element: <Login />
   },
   {
     path: "/signup",
