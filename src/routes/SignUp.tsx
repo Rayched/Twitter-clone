@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { auth } from "../FirebaseSetup";
 
 interface  I_SignupForm {
-    UserId?: string;
+    UserName?: string;
     Email?: string;
     Password?: string;
 };
@@ -92,10 +94,31 @@ const SubmitBtn = styled.button`
 
 function SignUpPage(){
     const {register, handleSubmit, setValue} = useForm();
+    const [isLoading, setLoading] = useState(false);
+    const Navigate = useNavigate();
 
-    const onValid = ({UserId, Email}: I_SignupForm) => {
-        alert(`Id: ${UserId} / Email: ${Email}`);
-        setValue("UserId", "");
+    const onValid = async({UserName, Email, Password}: I_SignupForm) => {
+        if(isLoading || UserName === "" || Email === "" || Password === ""){
+            return;
+        }
+        try {
+            setLoading(true);
+            const Credentials = await createUserWithEmailAndPassword(
+                auth, 
+                String(Email), 
+                String(Password)
+            );
+            console.log(Credentials.user);
+            await updateProfile(Credentials.user, {
+                displayName: UserName
+            });
+            Navigate("/");
+        } catch(error){
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+        setValue("UserName", "");
         setValue("Password", "");
         setValue("Email", "");
     };
@@ -118,20 +141,18 @@ function SignUpPage(){
             <SignupForms onSubmit={handleSubmit(onValid)}>
                 <InputBox 
                     type="text" 
-                    placeholder="아이디 (세 글자 이상)"
+                    placeholder="닉네임 (세 글자 이상)"
                     autoComplete="off"
-                    {
-                        ...register(
-                            "UserId", 
-                            {
-                                required: true,
-                                minLength: {
-                                    value: 2,
-                                    message: "최소 3 글자 이상 입력해주세요."
-                                }
+                    {...register(
+                        "UserName", 
+                        {
+                            required: true,
+                            minLength: {
+                                value: 3, 
+                                message: "최소 3 글자 이상 입력해주세요."
                             }
-                        )
-                    }
+                        }
+                    )}
                 />
                 <InputBox 
                     type="text" 
@@ -142,16 +163,23 @@ function SignUpPage(){
                         {
                             required: true,
                             pattern: {
-                                value: /^[A-Za-z0-9.%+-]+@[A-Za-z09.%+-]+\.[A-Za-z]{2,}$/,
+                                value: /^[A-Za-z0-9]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
                                 message: "입력하신 이메일을 다시 확인해주세요."
                             }
                         }
                     )}
                 />
                 <InputBox 
-                    type="password" 
-                    placeholder="비밀번호"
-                    {...register("Password", {required: true})}
+                    type="password"
+                    autoComplete="off"
+                    placeholder="비밀번호 (최소 6 글자 이상)"
+                    {...register(
+                        "Password", 
+                        {
+                            required: true,
+                            minLength: 6
+                        }
+                    )}
                 />
                 <SubmitBtn>회원 가입</SubmitBtn>
             </SignupForms>

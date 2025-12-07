@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { auth } from "../FirebaseSetup";
 
 const Wrapper = styled.div`
     width: inherit;
@@ -39,12 +40,17 @@ const CreateAccountBtn = styled.div`
 `;
 
 export default function Home(){
+    const Logout = () => {
+        auth.signOut();
+        alert("로그아웃");
+    };
     return (
         <Wrapper>
             <h4>Home</h4>
             <CreateAccountBtn>
                 <Link to={"/signup"}>계정 만들기</Link>
             </CreateAccountBtn>
+            <button onClick={Logout}>로그아웃</button>
         </Wrapper>
     );
 }

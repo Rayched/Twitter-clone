@@ -1,12 +1,14 @@
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import styled from "styled-components";
-import Layout from "./Routings/layout";
-import Home from "./Routings/Home";
+import Layout from "./routes/layout";
+import Home from "./routes/Home";
 import { useEffect, useState } from "react";
-import LoadingScreen from "./Routings/Loading";
+import LoadingScreen from "./routes/Loading";
 import { auth } from "./FirebaseSetup";
-import SignUpPage from "./Routings/SignUp";
+import SignUpPage from "./routes/SignUp";
+import LoginPage from "./routes/Login";
+import ProtectedRoute from "./components/protected-route";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -19,7 +21,7 @@ const Wrapper = styled.div`
 const Routers = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <ProtectedRoute><Layout /></ProtectedRoute>,
     children: [
       {
         path: "",
@@ -30,6 +32,10 @@ const Routers = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUpPage />
+  },
+  {
+    path: "/login",
+    element: <LoginPage />
   }
 ]);
 

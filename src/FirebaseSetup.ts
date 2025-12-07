@@ -1,10 +1,9 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
-const Keys = process.env.REACT_APP_FIREBASE_API_KEY;
 
 const firebaseConfig = {
-  apiKey: Keys,
+  apiKey: "AIzaSyA0UJCoCVawrR-QyRZ9jWWOKIuuU1ezF1A",
   authDomain: "nwitter-cfafe.firebaseapp.com",
   projectId: "nwitter-cfafe",
   storageBucket: "nwitter-cfafe.firebasestorage.app",
