@@ -4,11 +4,13 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { auth } from "../FirebaseSetup";
+import { FirebaseError } from "firebase/app";
+import { error } from "console";
 
 interface  I_SignupForm {
-    UserName?: string;
-    Email?: string;
-    Password?: string;
+    username?: string;
+    email?: string;
+    password?: string;
 };
 
 const SignupWrapper = styled.div`
@@ -93,39 +95,53 @@ const SubmitBtn = styled.button`
 `;
 
 function SignUpPage(){
-    const {register, handleSubmit, setValue} = useForm();
+    const {
+        register, 
+        handleSubmit, 
+        setValue, 
+        setError,
+        formState: {errors}
+    } = useForm();
     const [isLoading, setLoading] = useState(false);
+    /**
+     * useForm의 `setError`, formState 활용한 형태로
+     * 컨버전 해볼 것
+    */
+
     const Navigate = useNavigate();
 
-    const onValid = async({UserName, Email, Password}: I_SignupForm) => {
-        if(isLoading || UserName === "" || Email === "" || Password === ""){
+    const onSubmit = async(data: I_SignupForm) => {
+        if(isLoading || data.username === "" || data.email === "" || data.password === ""){
             return;
         }
         try {
             setLoading(true);
             const Credentials = await createUserWithEmailAndPassword(
                 auth, 
-                String(Email), 
-                String(Password)
+                String(data.email), 
+                String(data.password)
             );
             console.log(Credentials.user);
             await updateProfile(Credentials.user, {
-                displayName: UserName
+                displayName: data.username
             });
             Navigate("/");
         } catch(error){
-            console.log(error);
+            if(error instanceof FirebaseError){
+                setError("email", {
+                    type: "manual",
+                    message: "중복된 이메일 입니다."
+                });
+            }
         } finally {
             setLoading(false);
         }
-        setValue("UserName", "");
-        setValue("Password", "");
-        setValue("Email", "");
+        setValue("username", "");
+        setValue("password", "");
+        setValue("email", "");
     };
 
-    useEffect(() => {
-        console.log("test")
-    })
+    useEffect(() => console.log(errors), [isLoading]);
 
     return (
         <SignupWrapper>
@@ -138,13 +154,13 @@ function SignUpPage(){
                 </svg>
                 <MessageBox>계정을 생성하세요</MessageBox>
             </SignupHeader>
-            <SignupForms onSubmit={handleSubmit(onValid)}>
+            <SignupForms onSubmit={handleSubmit(onSubmit)}>
                 <InputBox 
                     type="text" 
                     placeholder="닉네임 (세 글자 이상)"
                     autoComplete="off"
                     {...register(
-                        "UserName", 
+                        "username", 
                         {
                             required: true,
                             minLength: {
@@ -159,7 +175,7 @@ function SignUpPage(){
                     placeholder="이메일" 
                     autoComplete="off"
                     {...register(
-                        "Email", 
+                        "email", 
                         {
                             required: true,
                             pattern: {
@@ -169,18 +185,23 @@ function SignUpPage(){
                         }
                     )}
                 />
+                {errors?.email && <div className="errors">{`${errors?.email.message}`}</div>}
                 <InputBox 
                     type="password"
                     autoComplete="off"
                     placeholder="비밀번호 (최소 6 글자 이상)"
                     {...register(
-                        "Password", 
+                        "password",
                         {
                             required: true,
-                            minLength: 6
+                            minLength: {
+                                value: 6,
+                                message: "비밀번호는 최소 6 글자 이상이어야 합니다."
+                            }
                         }
                     )}
                 />
+                {errors?.password?.message && <div className="ErrorBox">{`${errors?.password?.message}`}</div>}
                 <SubmitBtn>회원 가입</SubmitBtn>
             </SignupForms>
         </SignupWrapper>
