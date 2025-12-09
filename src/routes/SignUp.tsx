@@ -110,7 +110,7 @@ function SignUpPage(){
 
     const Navigate = useNavigate();
 
-    const onSubmit = async(data: I_SignupForm) => {
+    const FormSubmit = async(data: I_SignupForm) => {
         if(isLoading || data.username === "" || data.email === "" || data.password === ""){
             return;
         }
@@ -154,7 +154,7 @@ function SignUpPage(){
                 </svg>
                 <MessageBox>계정을 생성하세요</MessageBox>
             </SignupHeader>
-            <SignupForms onSubmit={handleSubmit(onSubmit)}>
+            <SignupForms onSubmit={handleSubmit(FormSubmit)}>
                 <InputBox 
                     type="text" 
                     placeholder="닉네임 (세 글자 이상)"
