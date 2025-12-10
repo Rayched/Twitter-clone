@@ -90,7 +90,6 @@ const SubmitBtn = styled.button`
 
     &:hover {
         background-color: rgb(220, 221, 225);
-        
     };
 `;
 
@@ -125,7 +124,7 @@ function SignUpPage(){
             await updateProfile(Credentials.user, {
                 displayName: data.username
             });
-            Navigate("/");
+            Navigate("/home");
         } catch(error){
             if(error instanceof FirebaseError){
                 setError("email", {

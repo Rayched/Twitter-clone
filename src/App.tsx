@@ -9,6 +9,7 @@ import { auth } from "./FirebaseSetup";
 import SignUpPage from "./routes/SignUp";
 import LoginPage from "./routes/Login";
 import ProtectedRoute from "./components/protected-route";
+import Lobby from "./routes/Lobby";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -25,9 +26,13 @@ const Routers = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Home />
+        element: <Lobby />
       }
     ]
+  },
+  {
+    path: "/home",
+    element: <Home />
   },
   {
     path: "/signup",
