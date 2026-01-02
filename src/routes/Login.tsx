@@ -140,7 +140,7 @@ function LoginPage(){
                 </SignInDataBox>
                 <SubmitBtn>로그인</SubmitBtn>
                 {errors?.LoginError && <ErrorBox>{`${errors?.LoginError?.message}`}</ErrorBox>}
-                <PasswordResetBtn>비밀번호를 잊으셨나요?</PasswordResetBtn>
+                <PasswordResetBtn onClick={() => Navigate("/password_reset")}>비밀번호를 잊으셨나요?</PasswordResetBtn>
                 <SignupBox>
                     <span className="guideMessage">계정이 없으신가요?</span>
                     <Link to={"/signup"}>가입하기</Link>
