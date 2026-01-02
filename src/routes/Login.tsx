@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { auth } from "../FirebaseSetup";
 import { CloseBtn, Forms, Headers, Logo_small, MessageBox, SubmitBtn, Wrapper } from "../components/AccountComponents";
+import GithubLoginBtn from "../components/GithubLoginBtn";
 
 interface I_SignInForms {
     EmailInput?: string;
@@ -37,6 +38,32 @@ const InputBox = styled.input`
     padding: 0px 5px;
 `;
 
+const ErrorBox = styled.div`
+    color: black;
+    background-color: darkgray;
+    padding: 3px 5px;
+    margin-top: 5px;
+`;
+
+const SignupBox = styled.div`
+    text-align: center;
+    margin-top: 10px;
+
+    .guideMessage {
+        color: gray;
+        margin-right: 7px;
+    };
+
+    a {
+        color: blue;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+`;
+
 function LoginPage(){
     const Navigate = useNavigate();
     const {
@@ -47,10 +74,6 @@ function LoginPage(){
         setError
     } = useForm();
     const [isLoading, setLoading] = useState(false);
-
-    const RedirectSignupPage = () => {
-        Navigate("/signup");
-    };
 
     const FormSubmit = async({EmailInput, PasswordInput}: I_SignInForms) => {
         if(isLoading || EmailInput === "" || PasswordInput === ""){
@@ -65,7 +88,10 @@ function LoginPage(){
                 );
                 Navigate("/home");
             } catch(e){
-                alert(e);
+                setError("LoginError", {
+                    type: "menual",
+                    message: "이메일 혹은 비밀번호를 다시 확인해주세요."
+                })
             } finally {}
         }
         setValue("EmailInput", "");
@@ -96,8 +122,13 @@ function LoginPage(){
                     />
                 </SignInDataBox>
                 <SubmitBtn>로그인</SubmitBtn>
-            </Forms>
-            <button onClick={RedirectSignupPage}>회원 가입</button>
+                {errors?.LoginError && <ErrorBox>{`${errors?.LoginError?.message}`}</ErrorBox>}
+                <SignupBox>
+                    <span className="guideMessage">계정이 없으신가요?</span>
+                    <Link to={"/signup"}>가입하기</Link>
+                </SignupBox>
+            </Forms>  
+            <GithubLoginBtn BtnText="Github로 로그인하기"/>
         </Wrapper>
     );
 };

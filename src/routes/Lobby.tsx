@@ -2,6 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import {styled} from "styled-components";
 import { Logo_small, MessageBox } from "../components/AccountComponents";
+import GithubLoginBtn from "../components/GithubLoginBtn";
 
 interface I_LinkBoxMessages {
     fontSize: number;
@@ -94,7 +95,7 @@ export default function Lobby(){
             </LobbyHeaders>
             <LinkBox>
                 <LinkBoxMessages fontSize={20}>지금 가입하세요.</LinkBoxMessages>
-                <LinkButton>Github 계정으로 가입하기</LinkButton>
+                <GithubLoginBtn BtnText="Github 계정으로 가입하기"/>
                 <LinkButton>
                     <Link to={"/signup"}>계정 만들기</Link>
                 </LinkButton>
@@ -108,3 +109,10 @@ export default function Lobby(){
         </Wrapper>
     );
 };
+
+/**
+ * 소셜 로그인 추가
+ * 
+ * - firebase console로 들어가서
+ *   
+ */

@@ -12,33 +12,6 @@ const Wrapper = styled.div`
     background-color: black;
 `;
 
-const CreateAccountBtn = styled.div`
-    width: 150px;
-    height: 40px;
-    background-color: white;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-
-    a {
-        text-decoration: none;
-        color: black;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    };
-
-    &:hover {
-        background-color: rgb(220, 221, 225);
-    };
-`;
-
 export default function Home(){
     const Navigate = useNavigate();
     
@@ -51,9 +24,6 @@ export default function Home(){
     return (
         <Wrapper>
             <h4>Home</h4>
-            <CreateAccountBtn>
-                <Link to={"/signup"}>계정 만들기</Link>
-            </CreateAccountBtn>
             <button onClick={Logout}>로그아웃</button>
         </Wrapper>
     );
