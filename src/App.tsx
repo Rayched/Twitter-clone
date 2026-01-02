@@ -22,7 +22,7 @@ const Wrapper = styled.div`
 const Routers = createBrowserRouter([
   {
     path: "/",
-    element: <ProtectedRoute><Layout /></ProtectedRoute>,
+    element: <Layout />,
     children: [
       {
         path: "",
@@ -32,7 +32,7 @@ const Routers = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <Home />
+    element: <ProtectedRoute><Home /></ProtectedRoute>
   },
   {
     path: "/signup",
