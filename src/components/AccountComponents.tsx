@@ -48,7 +48,7 @@ export const Forms = styled.form`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 70%;
+    height: 60%;
 `;
 
 export const SubmitBtn = styled.button`

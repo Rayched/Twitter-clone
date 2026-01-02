@@ -8,8 +8,9 @@ import LoadingScreen from "./routes/Loading";
 import { auth } from "./FirebaseSetup";
 import SignUpPage from "./routes/SignUp";
 import LoginPage from "./routes/Login";
-import ProtectedRoute from "./components/protected-route";
+import { DefaultProtected, HomeProtected } from "./components/protected-route";
 import Lobby from "./routes/Lobby";
+import PasswordResetPage from "./routes/PasswordReset";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -22,7 +23,7 @@ const Wrapper = styled.div`
 const Routers = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <DefaultProtected><Layout /></DefaultProtected>,
     children: [
       {
         path: "",
@@ -32,7 +33,8 @@ const Routers = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <ProtectedRoute><Home /></ProtectedRoute>
+    //element: <Home />,
+    element: <HomeProtected><Home /></HomeProtected>
   },
   {
     path: "/signup",
@@ -40,7 +42,11 @@ const Routers = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <LoginPage />
+    element: <LoginPage />,
+  },
+  {
+    path: "/password_reset",
+    element: <PasswordResetPage />
   }
 ]);
 

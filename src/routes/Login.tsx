@@ -64,6 +64,23 @@ const SignupBox = styled.div`
     }
 `;
 
+const PasswordResetBtn = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 30px;
+    border: 1px solid gray;
+    border-radius: 15px;
+    background-color: black;
+    margin-top: 10px;
+    margin-bottom: 15px;
+
+    &:hover {
+        background-color: rgb(48, 47, 47);
+    }
+`;
+
 function LoginPage(){
     const Navigate = useNavigate();
     const {
@@ -123,6 +140,7 @@ function LoginPage(){
                 </SignInDataBox>
                 <SubmitBtn>로그인</SubmitBtn>
                 {errors?.LoginError && <ErrorBox>{`${errors?.LoginError?.message}`}</ErrorBox>}
+                <PasswordResetBtn>비밀번호를 잊으셨나요?</PasswordResetBtn>
                 <SignupBox>
                     <span className="guideMessage">계정이 없으신가요?</span>
                     <Link to={"/signup"}>가입하기</Link>
