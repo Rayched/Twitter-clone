@@ -2,15 +2,16 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import styled from "styled-components";
 import Layout from "./routes/layout";
-import Home from "./routes/Home";
+import Home from "./routes/home/Home";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./routes/Loading";
-import { auth } from "./FirebaseSetup";
-import SignUpPage from "./routes/SignUp";
-import LoginPage from "./routes/Login";
+import SignUpPage from "./routes/authentication/SignUp";
+import LoginPage from "./routes/authentication/Login";
 import { DefaultProtected, HomeProtected } from "./components/protected-route";
-import Lobby from "./routes/Lobby";
-import PasswordResetPage from "./routes/PasswordReset";
+import Lobby from "./routes/authentication/Lobby";
+import PasswordResetPage from "./routes/authentication/PasswordReset";
+import HomeLayout from "./routes/home/HomeLayout";
+import AddPostPage from "./routes/home/childrens/AddPostPage";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -34,7 +35,11 @@ const Routers = createBrowserRouter([
   {
     path: "/home",
     //element: <Home />,
-    element: <HomeProtected><Home /></HomeProtected>
+    element: <HomeProtected><HomeLayout /></HomeProtected>,
+    children: [
+      {path: "", element: <Home />},
+      {path: "addpost", element: <AddPostPage/>}
+    ]
   },
   {
     path: "/signup",
@@ -70,7 +75,7 @@ function App() {
     <Wrapper>
         {
           isLoading ? <LoadingScreen /> 
-          :<RouterProvider router={Routers} />
+          : <RouterProvider router={Routers} />
         }
     </Wrapper>
   );

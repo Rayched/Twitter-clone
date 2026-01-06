@@ -1,0 +1,16 @@
+@font-face {
+    font-family: "NotoSans";
+    src: url(NotoSans-Regular.ttf);
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+}
+
+@font-face {
+    font-family: "NotoSans-KR";
+    src: url(NotoSansKR-Regular.ttf);
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
