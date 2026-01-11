@@ -1,10 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
+
 import styled from "styled-components";
 import { auth } from "../../FirebaseSetup";
 import { AddBtnArea, AddPhotoBtn, AddPhotoInput, PostArea, SubmitBtn, type I_Posts } from "./childrens/AddPostPage";
 import { AddImageIcon } from "../../components/Icons";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+
+interface I_Article {
+    PostText?: string;
+    ImageFile?: FileList|null;
+};
 
 const Wrapper = styled.div`
     width: 100%;
@@ -43,7 +48,6 @@ const H_AddFileInput = styled(AddPhotoInput)``;
 const H_SubmitBtn = styled(SubmitBtn)``;
 
 export default function Home(){
-    const Navigate = useNavigate();
     const {
         register, 
         handleSubmit,
@@ -51,9 +55,9 @@ export default function Home(){
         setValue
     } = useForm({mode: "onChange"});
 
-    const [Article, setArticle] = useState<I_Posts>();
+    const [Article, setArticle] = useState<I_Article>();
 
-    const PostSubmit = async({PostText, ImageFile}: I_Posts) => {
+    const PostSubmit = async({PostText, ImageFile}: I_Article) => {
         if(PostText === ""){
             return;
         } else {

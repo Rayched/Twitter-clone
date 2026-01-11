@@ -3,10 +3,11 @@ import { Form, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AddImageIcon } from "../../../components/Icons";
 import { useEffect, useState } from "react";
+import { ImageFileEncoded } from "../../../utils/util";
 
 export interface I_Posts {
     PostText?: string;
-    ImageFile?: File|null;
+    ImageFile?: string;
 };
 
 const Wrapper = styled.div`
@@ -112,7 +113,7 @@ export const SubmitBtn = styled.button`
 export default function AddPostPage(){
     const Navigate = useNavigate();
     const [isLoading, setLoading] = useState(false);
-    const [Posts, setPosts] = useState<I_Posts>();
+    const [Posts, setPosts] = useState<I_Posts>({PostText: "", ImageFile: ""});
 
     const {
         register, 
@@ -121,16 +122,24 @@ export default function AddPostPage(){
     } = useForm({mode: "onChange"});
 
     const PostSubmit = ({PostText, ImageFile}: I_Posts) => {
-        setPosts({
-            PostText: PostText, 
-            ImageFile: ImageFile
-        });
+        if(ImageFile === ""){
+            setPosts({
+                PostText: PostText,
+                ImageFile: ImageFile
+            });
+        } else {
+            setPosts((state) => ({
+                PostText: PostText,
+                ImageFile: state.ImageFile
+            }));
+        }
         Navigate("..");
     };
 
+    
     useEffect(() => {
         console.log(Posts);
-    }, [Posts]);
+    }, [Posts.PostText]);
 
     return (
         <Wrapper>
@@ -158,7 +167,17 @@ export default function AddPostPage(){
                             id="file" 
                             type="file" 
                             accept="image/*" 
-                            {...register("ImageFile")}
+                            {...register("ImageFile", {
+                                onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+                                    ImageFileEncoded({
+                                        ImageFiles: event.currentTarget.files,
+                                        onFileLoad: (filedata) => setPosts((state) => ({
+                                            PostText: state.PostText,
+                                            ImageFile: filedata
+                                        }))
+                                    })
+                                }
+                            })}
                         />
                         <SubmitBtn>게시하기</SubmitBtn>
                     </AddBtnArea>
