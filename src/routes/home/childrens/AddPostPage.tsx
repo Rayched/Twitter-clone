@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { AddImageIcon } from "../../../components/Icons";
 import { useEffect, useState } from "react";
 
-interface I_Posts {
+export interface I_Posts {
     PostText?: string;
     ImageFile?: File|null;
 };
@@ -114,7 +114,11 @@ export default function AddPostPage(){
     const [isLoading, setLoading] = useState(false);
     const [Posts, setPosts] = useState<I_Posts>();
 
-    const {register, handleSubmit} = useForm();
+    const {
+        register, 
+        handleSubmit, 
+        formState: {dirtyFields}
+    } = useForm({mode: "onChange"});
 
     const PostSubmit = ({PostText, ImageFile}: I_Posts) => {
         setPosts({
@@ -125,7 +129,7 @@ export default function AddPostPage(){
     };
 
     useEffect(() => {
-        console.log(Posts)
+        console.log(Posts);
     }, [Posts]);
 
     return (
@@ -148,6 +152,7 @@ export default function AddPostPage(){
                     <AddBtnArea>
                         <AddPhotoBtn htmlFor="file">
                             <AddImageIcon w_value={35} h_value={30} />
+                            {dirtyFields.ImageFile ? <div>✔</div> : null}
                         </AddPhotoBtn>
                         <AddPhotoInput 
                             id="file" 
